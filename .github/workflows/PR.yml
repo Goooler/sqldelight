@@ -49,14 +49,16 @@ jobs:
         if: matrix.os == 'ubuntu-18.04' && matrix.job == 'gradle-plugin-tests'
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: :sqldelight-gradle-plugin:test --tests="app.cash.sqldelight.tests.*"
-          arguments: :sqldelight-gradle-plugin:test --tests="app.cash.sqldelight.properties.*"
+          arguments: |
+            :sqldelight-gradle-plugin:test --tests="app.cash.sqldelight.tests.*"
+            :sqldelight-gradle-plugin:test --tests="app.cash.sqldelight.properties.*"
       - name: Run gradle plugin integrations
         if: matrix.os == 'ubuntu-18.04' && matrix.job == 'gradle-plugin-integrations'
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: :sqldelight-gradle-plugin:test --tests="app.cash.sqldelight.integrations.*"
-          arguments: :sqldelight-gradle-plugin:test --tests="app.cash.sqldelight.dialect.*"
+          arguments: |
+            :sqldelight-gradle-plugin:test --tests="app.cash.sqldelight.integrations.*"
+            :sqldelight-gradle-plugin:test --tests="app.cash.sqldelight.dialect.*"
 
       - name: Run the IntelliJ plugin
         if: matrix.os == 'ubuntu-18.04' && matrix.job == 'instrumentation'
