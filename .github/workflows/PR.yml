@@ -33,35 +33,43 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 11
-      - name: Setup gradle
-        uses: gradle/gradle-build-action@v2
 
       # Linux tests
       - name: Run gradle tests
         if: matrix.os == 'ubuntu-18.04' && matrix.job == 'test'
-        run: |
-          ./gradlew build -x :sqldelight-idea-plugin:build -x :sqldelight-gradle-plugin:test --stacktrace
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build -x :sqldelight-idea-plugin:build -x :sqldelight-gradle-plugin:test --stacktrace
       - name: Run gradle plugin tests
         if: matrix.os == 'ubuntu-18.04' && matrix.job == 'gradle-plugin-tests'
-        run: ./gradlew :sqldelight-gradle-plugin:test
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :sqldelight-gradle-plugin:test
 
       - name: Run the IntelliJ plugin
         if: matrix.os == 'ubuntu-18.04' && matrix.job == 'instrumentation'
-        run: ./gradlew :sqldelight-idea-plugin:build --stacktrace
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :sqldelight-idea-plugin:build --stacktrace
       - name: Verify IntelliJ plugin
         if: matrix.os == 'ubuntu-18.04' && matrix.job == 'instrumentation'
-        run: ./gradlew :sqldelight-idea-plugin:runPluginVerifier
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :sqldelight-idea-plugin:runPluginVerifier
 
       # Windows tests
       - name: Run windows tests
         if: matrix.os == 'windows-latest'
-        run: ./gradlew mingwX64Test sqldelight-idea-plugin:check --stacktrace
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: mingwX64Test sqldelight-idea-plugin:check --stacktrace
 
       - name: Run linux tests
         if: matrix.os == 'ubuntu-18.04'
-        run: ./gradlew linuxTest
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: linuxTest
 
-      # iOS tests
       - name: Run instrumentation tests
         if: matrix.os == 'macOS-latest' && matrix.job == 'instrumentation'
         uses: reactivecircus/android-emulator-runner@v2
@@ -71,9 +79,10 @@ jobs:
 
       - name: Run ios tests
         if: matrix.os == 'macOS-latest' && matrix.job == 'test'
-        run: ./gradlew iosX64Test --stacktrace
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: iosX64Test --stacktrace
 
-      # Build the sample
       - name: Build the sample
         if: matrix.os == 'macOS-latest' && matrix.job == 'gradle-plugin-tests'
         uses: gradle/gradle-build-action@v2
