@@ -11,7 +11,7 @@ jobs:
   publish_archives:
     strategy:
       matrix:
-        os: [macOS-latest, windows-latest, ubuntu-18.04]
+        os: [ macOS-latest, windows-latest, ubuntu-18.04 ]
 
     runs-on: ${{matrix.os}}
     if: github.repository == 'cashapp/sqldelight'
@@ -27,28 +27,16 @@ jobs:
 
       - name: Publish the macOS artifacts
         if: matrix.os == 'macOS-latest'
-        env:
-          ORG_GRADLE_PROJECT_mavenCentralRepositoryUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
-          ORG_GRADLE_PROJECT_mavenCentralRepositoryPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
-          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.ARTIFACT_SIGNING_PRIVATE_KEY }}
         uses: gradle/gradle-build-action@v2
         with:
           arguments: publishAllPublicationsToMavenRepository --no-daemon
       - name: Publish the windows artifact
         if: matrix.os == 'windows-latest'
-        env:
-          ORG_GRADLE_PROJECT_mavenCentralRepositoryUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
-          ORG_GRADLE_PROJECT_mavenCentralRepositoryPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
-          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.ARTIFACT_SIGNING_PRIVATE_KEY }}
         uses: gradle/gradle-build-action@v2
         with:
           arguments: publishMingwX64PublicationToMavenRepository publishMingwX86PublicationToMavenRepository
       - name: Publish the linux artifact
         if: matrix.os == 'ubuntu-18.04'
-        env:
-          ORG_GRADLE_PROJECT_mavenCentralRepositoryUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
-          ORG_GRADLE_PROJECT_mavenCentralRepositoryPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
-          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.ARTIFACT_SIGNING_PRIVATE_KEY }}
         uses: gradle/gradle-build-action@v2
         with:
           arguments: publishLinuxX64PublicationToMavenRepository
@@ -70,3 +58,6 @@ jobs:
 
 env:
   GRADLE_OPTS: -Dorg.gradle.configureondemand=true -Dorg.gradle.parallel=false -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx3g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
+  ORG_GRADLE_PROJECT_mavenCentralRepositoryUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
+  ORG_GRADLE_PROJECT_mavenCentralRepositoryPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
+  ORG_GRADLE_PROJECT_signingKey: ${{ secrets.ARTIFACT_SIGNING_PRIVATE_KEY }}
