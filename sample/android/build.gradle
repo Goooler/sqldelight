@@ -12,7 +12,7 @@ android {
 
   defaultConfig {
     minSdk 21
-    targetSdk deps.versions.compileSdk.get()
+    targetSdk deps.versions.compileSdk.get().toInteger()
 
     applicationId 'com.example.sqldelight.hockey'
 
