@@ -70,10 +70,10 @@ class PropertiesFileTest {
         |archivesBaseName = 'Test'
         |
         |android {
-        |  compileSdk deps.versions.compileSdk.get() as int
+        |  compileSdk deps.versions.compileSdk.get().toInteger()
         |
         |  defaultConfig {
-        |    minSdk deps.versions.minSdk.get() as int
+        |    minSdk deps.versions.minSdk.get().toInteger()
         |  }
         |}
         |
