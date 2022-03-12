@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-  compileSdk deps.versions.compileSdk.get().toInteger()
+  compileSdk = deps.versions.compileSdk.get().toInteger()
 
   lint {
     textOutput 'stdout'
@@ -12,7 +12,7 @@ android {
 
   defaultConfig {
     minSdk 21
-    targetSdk deps.versions.compileSdk.get().toInteger()
+    targetSdk = deps.versions.compileSdk.get().toInteger()
 
     applicationId 'com.example.sqldelight.hockey'
 
